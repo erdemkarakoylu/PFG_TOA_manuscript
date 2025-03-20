@@ -28,12 +28,8 @@ keywords:
   - PACE Mission
 
 abstract: |
-  In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). ...
-plain-language-summary: |
-  Earthquake data for the island of La Palma from the September 2021 eruption is found ...
-key-points:
-  - A web scraping script was developed to pull data from the Instituto Geogràphico Nacional into a machine-readable form for analysis
-  - Earthquake events on La Palma are consistent with the presence of both mantle and crustal reservoirs.
+  Phytoplankton functional groups (PFGs) play a key role in ocean biogeochemical cycling, climate regulation, and marine ecosystem dynamics. Accurate quantification of these groups from satellite ocean color data remains challenging due to spectral similarities among phytoplankton types and the limitations of existing empirical and semi-analytical models. In this study, we developed an XGBoost-based regression model to retrieve multiple PFGs and total chlorophyll-a concentrations from simulated hyperspectral remote sensing reflectance (Rrs) data, mimicking the NASA Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission. We also included ancillary environmental information. The final model, validated on an out-of-sample set, demonstrated strong predictive performance across most functional groups, with R² values exceeding 0.95. Dinoflagellate retrievals showed lower accuracy (R² = 0.53). Further analysis revealed that temperature was a key predictor alongside hyperspectral reflectance, suggesting that integrating external temperature data could enhance future retrieval models. Furthermore, despite using only 10% of the available hyperspectral bands, feature importance analysis showed that specific spectral regions disproportionately contributed to model predictions. These findings highlight the potential of machine learning for phytoplankton classification and inform future algorithm development for hyperspectral ocean color missions.
+
 date: last-modified
 bibliography: references.bib
 citation:
@@ -113,7 +109,29 @@ The best trial finished with an RMSE of $0.116mgL^{-1} Chl_a$. Below is the list
 
 ### Optimized Model Validation
 
-The next step was to load the best set of hyperparameter (listed above) into the model and retrain the model on the entire training set. The optimized and trained model was then validated using the test set, which prior to the HPO process and until this step had been set aside . This validation step ensured that the model performed satisfactorily on unseen data and was ready for prediction on new data. The following performance metrics were recorded during validation:
+The next step was to load the best set of hyperparameter (listed above) into the model and retrain the model on the entire training set. The optimized and trained model was then validated using the test set, which prior to the HPO process and until this step had been set aside.
+
+:::{#fig-gof}
+
+![](images/goodness-of-fit_rrs_env.png)
+
+Goodness-of-fit plots for all groups and total chorophyll *a*, measured on out-of-sample data set. THe model is able to predict with very good accuracy. Dinoflagellates are the notable exception. 
+:::
+
+A more complete set of metrics are summarized in table [@tbl-metrics] See further below for metrics explanation.
+
+
+| Metric        | Diatom  | Chloroph. | Cyanobac | Coccolith. | Dinoflag. | Phaeo  | Tot. Chl_a |
+|---------------|--------:|----------:|---------:|-----------:|----------:|-------:|------------|
+| **MSE**       | 0.00034 | 0.00010   | 2.89e-06 | 8.59e-05   | 1.96e-05  | 0.00011 | 0.000193  |
+| **RMSE**      | 0.0184  | 0.0100    | 0.0017   | 0.00927    | 0.00443   | 0.0105  | 0.0139    |
+| **MAE**       | 0.00878 | 0.0042    | 0.00078  | 0.0042     | 0.000637  | 0.00313 | 0.00728   |
+| **R-squared** | 0.979   | 0.958     | 0.996    | 0.985      | 0.530     | 0.999   | 0.999     |
+| **MAE/StDev** | 0.0691  | 0.0858    | 0.0302   | 0.0563     | 0.0986    | 0.00754 | 0.0182    |
+
+: Performance metrics of optimized and trained model on hold out set {#tbl-metrics}
+
+#### Explanation of metrics
 
 - **Mean Squared Error (MSE):**  
   MSE is the average of the squared differences between the predicted and true values. Squaring the errors emphasizes larger deviations, making MSE sensitive to outliers. In our context, MSE is expressed in units of (mg L$^{-1}$ Chl$_a$)$^2$. Lower MSE values indicate better model performance.
@@ -130,12 +148,35 @@ The next step was to load the best set of hyperparameter (listed above) into the
 - **MAE/StDev$_{true}$:**  
   This ratio compares the mean absolute error to the standard deviation of the true values. It provides a relative measure of error by indicating how the average error compares to the inherent variability in the data. A lower ratio implies that the model’s prediction error is small relative to the natural variability of the observations.
 
-  After retraining the final model using the best hyperparameters identified during hyperparameter optimization, we evaluated its performance on the held-out test set. The following metrics were computed for each target output (with units in $mg L^{-1} Chl_a in the case of RMSE and MAE):
+
+### XAI with Shapley Values
+
+The SHAP summary plots provides insights into feature importance and their effects on model predictions for phytoplankton functional groups. Features are ranked by impact, with the x-axis representing SHAP values—positive values increase predicted chlorophyll concentration, while negative values decrease it. The violin plot format shows the distribution of SHAP values, with wider sections indicating greater variability. The color gradient represents feature values, with red for high values and blue for low values. The midpoint of the color bar reflects a percentile-based central value, not necessarily the mean, median, or mode, as it depends on the feature’s distribution.
 
 
-### Conclusion
 
-### References {.unnumbered}
+::: {#fig-shap layout-ncol=2}
+
+![](images/shap_rrs_env_dia.png){#fig-diatoms}
+
+![](images/shap_rrs_env_chl.png){#fig-chloro}
+
+![](images/shap_rrs_env_cya.png){#fig-cyano}
+
+![](images/shap_rrs_env_coc.png){#fig-coccos}
+
+![](images/shap_rrs_env_din.png){#fig-dinos}
+
+![](images/shap_rrs_env_pha.png){#fig-phaeo}
+
+![](images/shap_rrs_env_tot_cphyl.png){#fig-tot_chl}
+
+Shapley values for each target variable.
+
+:::
+## Conclusion
+
+## References {.unnumbered}
 
 ::: {#refs}
 :::
