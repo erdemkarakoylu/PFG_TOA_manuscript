@@ -1,0 +1,12 @@
+{
+  "hash": "92272793fb7bcf9f83748a8da58e7e80",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Evaluation of Optimized and Trained Model\ndescription: Graphical and numerical evaluation of Phytoplankton Functional Group predicting XGBoost model using a hold-out dataset.\nauthors:\n  - name: Erdem Karakoylu\n    orcid: 0000-0002-0760-5497\n    note: Edited original notebook by Steve Purves\n---\n\n",
+    "supporting": [
+      "oasim_07_optimized_trained_model_eval_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
