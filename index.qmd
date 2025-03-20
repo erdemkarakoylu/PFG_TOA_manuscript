@@ -175,7 +175,7 @@ Shapley values are shown for each functional group and for total chlorophyll. Fe
 
 :::
 
-Most saliently, temperature was the top factors
+Most saliently, temperature was the top factor for all phytoplankton groups but is not a primordial feature in quantifying dinoflagellates.
 
 ## Conclusion
 
