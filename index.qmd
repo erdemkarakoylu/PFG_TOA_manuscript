@@ -151,7 +151,7 @@ A more complete set of metrics are summarized in table [@tbl-metrics] See furthe
 
 ### XAI with Shapley Values
 
-The SHAP summary plots provides insights into feature importance and their effects on model predictions for phytoplankton functional groups. Features are ranked by impact, with the x-axis representing SHAP values—positive values increase predicted chlorophyll concentration, while negative values decrease it. The violin plot format shows the distribution of SHAP values, with wider sections indicating greater variability. The color gradient represents feature values, with red for high values and blue for low values. The midpoint of the color bar reflects a percentile-based central value, not necessarily the mean, median, or mode, as it depends on the feature’s distribution.
+The SHAP summary plots provides insights into feature importance and their effects on model predictions for phytoplankton functional groups.
 
 
 
@@ -171,10 +171,16 @@ The SHAP summary plots provides insights into feature importance and their effec
 
 ![](images/shap_rrs_env_tot_cphyl.png){#fig-tot_chl}
 
-Shapley values for each target variable.
+Shapley values are shown for each functional group and for total chlorophyll. Features are ranked by most to least impactful, from top to bottom. Only the top 6 predictive features are shown. Along the x-axis, positive SHAP values indicate a positive relationship with the predicted; negative values, a negative one. Wider sections indicate greater variability. The color gradient represents feature values, with red for high values and blue for low values. The midpoint of the color bar reflects a percentile-based central value, not necessarily the mean, median, or mode, as it depends on the feature’s distribution.  
 
 :::
+
+Most saliently, temperature was the top factors
+
 ## Conclusion
+
+This study demonstrates the potential of machine learning, specifically XGBoost, for retrieving phytoplankton functional groups (PFGs) from hyperspectral ocean color data. Using simulated data designed to emulate NASA’s upcoming PACE mission, our model achieved high predictive accuracy for most PFGs, with R² values exceeding 0.95 for diatoms, cyanobacteria, coccolithophores, and phaeophytes. However, retrievals for dinoflagellates were less reliable, highlighting challenges in distinguishing this group based on spectral data alone. Hyperparameter optimization with Optuna improved model performance, and SHAP-based explainability analysis revealed that temperature was among the top six predictive features for all functional groups except dinoflagellates, emphasizing the need to integrate external sea surface temperature (SST) data in real-world applications. Furthermore, our findings confirm that only a subset of hyperspectral bands drive PFG retrieval, suggesting that future algorithm development should prioritize feature selection to optimize computational efficiency. These results contribute to ongoing efforts to enhance phytoplankton classification methods and provide insights for future ocean color missions seeking to leverage hyperspectral capabilities for improved ecological monitoring.
+
 
 ## References {.unnumbered}
 
